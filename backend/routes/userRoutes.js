@@ -1,9 +1,14 @@
 import express from 'express';
 import {
   createUser,
+  deleteUser,
   getAllUsers,
+  getCurrentUserProfile,
+  getUserById,
   loginUser,
   logoutUser,
+  updateCurrentUserProfile,
+  updateUserById,
 } from '../controllers/userController.js';
 import {
   authenticate,
@@ -19,4 +24,13 @@ router
 router.post('/auth', loginUser);
 router.post('/logout', logoutUser);
 
+router
+  .route('/profile', authenticate, getCurrentUserProfile)
+  .put(authenticate, updateCurrentUserProfile);
+
+router
+  .route('/:id')
+  .delete(authenticate, authorizedAdmin, deleteUser)
+  .get(authenticate, getUserById)
+  .put(authenticate, updateUserById);
 export default router;
